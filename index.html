@@ -30,34 +30,82 @@
 The results presented here are from the manuscript titled "Identifying and removing widespread signal deflections in fMRI data: Rethinking the global signal regression problem" by Kevin M. Aquino, Ben D. Fulcher, Linden Parkes, Kristina Sabaroedin, and Alex Fornito, (submitted 2019). For nomenclature and preprocessing steps please see the methods in the manuscript.
 </p>
 <p>
-	Note: this type of reporting is automatically generated in the <a href="https://github.com/BMHLab/DiCER.git">DiCER</a> code, using standard Python libraries (generated with Anaconda v.2.7.xx).
+	Note: this type of reporting is automatically generated in the <a href="https://github.com/BMHLab/DiCER.git">DiCER</a> code, using standard Python libraries (generated with Anaconda v5.0.1).
 </p>
 <p>	
 	Here, we show the grayplots for the full datasets arising from the UCLA, Beijing-Zang and Cambridge Multiecho datasets. The different voxel orderings: random, Grey matter signal ordering (GSO), Cluster-based ordering (CO) are all generated from the AROMA+2P pipeline.
 </p>
 <tr>
 <td><a href=UCLA/general_report.html>UCLA</a></td>
-<td>Carpet plot results for the UCLA Consortium for Neuropsychiatric Phenomics LA5c Study [1].</a></td>
+<td>Carpet plot results for the UCLA Consortium for Neuropsychiatric Phenomics LA5c Study. <a href=https://openneuro.org/datasets/ds000030/versions/00016> Link to data.</a></td>
 </tr>
 
 <tr>
 <td><a href=BZ/general_report.html>Beijing Zang</a></td>
-<td>Carpet plot results for the BZ [2].</td>
+<td>Carpet plot results for the Beijing-Zang rs-fMRI data sample. <a href=http://fcon_1000.projects.nitrc.org/fcpClassic/FcpTable.html> Link to data </a>.</td>
 </tr>
 
 <tr>
 <td><a href=CAM/general_report.html>Camridge Multiecho</a></td>
-<td>Carpet plot results for the Cambrdige multiecho dataset [3].</td>
+<td>Carpet plot results for the Cambrdige mult-iecho dataset. <a href="https://openneuro.org/datasets/ds000258/versions/00002">Link to data.</a></td>
 </tr>
+
+
+
 
 <p></p>
 <br><br>
 </table>
-<br><br><br><br>
-<h2>Carpet plot generation:</h2>
+<h2 align=left>Signal denoising:</h2>
 <p>
-	Following fmriprep, carpet plots were visualized. 
-	
+	In these results we show carpet plots (see below) from three denoising pipelines: (i) ICA-AROMA+2P - ICA-AROMA + white matter, and Cerebral spinal fluid regression, (ii) ICA-AROMA+2P+GMR - ICA-AROMA+2P and grey matter regression, and (iii) ICA-AROMA+2P+DiCER - ICA-AROMA+2P and DiCER (see preprint and code for algorithmic details). 
 </p>
+<br>
+<h2 align=left>Carpet plot generation:</h2>
+<p>
+	The visualization of all voxel time series as a carpet plot (or grayplot), is a very useful tool in detecting and understanding artifacts and hence evaluating noise-correction techniques. The carpet plot is a heatmap visualization of the voxel x time matrix, X (V x T for V voxels and T time points), usually after z-scoring each voxel time series (rows of X), resulting in the normalized matrix used here. To prevent outliers from dominating the color-scale limits and obscuring the in- teresting signal, we fixed these limits to the range [-1.2, 1.2]. Plotting independently measured time series, e.g., of head motion or respiration, above the carpet plot allows relationships between BOLD signals and non-neuronal time courses to be visualized straightforwardly.
+</p> 
+<p>
+	Here we focus on individual voxels as spatial elements, but note that carpet plots can also be constructed at coarse grained levels, for example, grouping voxels as regions of interest. The figure shows the three orderings (see text below) of a single subject from the UCLA cohort (sub-10376). 
+</p>
+
+
+
+<center>
+	<table>
+		<tr>		
+		<td><img id=AROMA+2Psub-10376 src=UCLA/sub-10376AROMA+2P_randomcarpet.png width=300px></td>
+		<td><img id=AROMA+2P+GMRsub-10376 src=UCLA/sub-10376AROMA+2P_GSOcarpet.png width=300px></td>
+		<td><img id=AROMA+2P+DiCERsub-10376 src=UCLA/sub-10376AROMA+2P_COcarpet.png width=300px></td>
+		</tr>
+		<tr>
+			<td align="center"> Random Ordering (RO) </td>
+			<td align="center"> Gray matter signal ordrering (GSO) </td>
+			<td align="center"> Cluster based Ordering (CO) </td>
+		</tr>
+	<p></p>
+	<br><br>
+</table>
+
+<h3 align=left> Random Ordering (RO)</h3>
+<p>
+Historically, voxels in carpet plots are ordered somewhat arbitrarily, by the numerical unfolding of the voxel mask into a vector (which is not a standardized procedure across different software packages), or the ordering of regions in a whole-brain parcellation (which varies depending on the parcellation used). We denote this ordering of voxels as `random ordering' (RO). RO carpet plots reveal artifacts and prominent, whole-brain signals but can obscure more complicated, non-global structure (as we show below). 
+</p>
+<p>
+Here we compare two alternative orderings that better reveal spatially structured patterns of signal fluctuations.
+</p>
+<h3 align=left> Gray matter signal ordrering (GSO)</h3>
+<p>
+ The first ordering scheme is `gray-matter signal ordering' (GSO), which orders voxels according to their Pearson correlation to the mean GM signal. By placing the voxels with the most positive correlations to the mean GM signal at the top of the plot (and the most strongly negatively correlated voxels are at the bottom), GSO carpet plots facilitate visual inspection of the spatial distribution of a given WSD. 
+</p>
+<h3 align=left> Cluster based Ordering (CO)</h3>
+<p>
+The second ordering scheme is `cluster-similarity ordering' (CO), which reorders voxels such that those with similar BOLD dynamics are placed close to one another. We computed this ordering using hierarchical average linkage clustering on Euclidean distances between pairs of z-scored time series. CO carpet plots offer a more comprehensive picture of the diversity and spatial extent of WSDs.
+</p>
+	
+<h3 align=left>Notes: </h3>
+<p> All carpet orderings are based on the AROMA+2P denoising pipeline, except for CO-DiCER which is CO derived with DiCER corrected data.
+</p>
+<br><br><br><br><br><br>
 </center></div>
 </html>
